@@ -3,14 +3,9 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const schema = new Schema({
-	email: {
+	text: {
 		type: String
 	},
-	password: {
-		type: String
-	}
-}, {
-	timestamps: true
 })
 
-export default mongoose.model('User', schema)
+export default mongoose.model('Test', schema)

@@ -3,14 +3,23 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const schema = new Schema({
-	email: {
+	s3Key: {
 		type: String
 	},
-	password: {
+	bucket: {
+		type: String
+	},
+	mime: {
+		type: String
+	},
+	comment: {
+		type: String
+	},
+	path: {
 		type: String
 	}
 }, {
 	timestamps: true
 })
 
-export default mongoose.model('User', schema)
+export default mongoose.model('File', schema)

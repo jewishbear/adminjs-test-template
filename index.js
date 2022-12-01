@@ -2,17 +2,30 @@ import express from 'express'
 import mongoose from 'mongoose'
 import AdminJS from 'adminjs'
 import AdminJSExpress from '@adminjs/express'
-import session from 'express-session'
 import MongoStore from 'connect-mongo'
+import * as AdminJSMongoose from '@adminjs/mongoose'
+import User from './models/User.js'
+import { files } from './resource/file.js'
+import TestResource from './resource/test.js'
+import { componentLoader } from './components/components.js'
 
 const PORT = process.env.PORT || 3003
-
-
 
 const start = async () => {
   const app = express()
 
-  const admin = new AdminJS({})
+  AdminJS.registerAdapter({
+    Resource: AdminJSMongoose.Resource,
+    Database: AdminJSMongoose.Database,
+  })
+  const admin = new AdminJS({
+    resources: [
+      User,
+      files,
+      // TestResource
+    ],
+    // componentLoader
+  })
 
   const sessionStore = MongoStore.create({
     mongoUrl: process.env.MONGO || 'mongodb://localhost:27017/admin'
@@ -26,6 +39,13 @@ const start = async () => {
   const authenticate = async (email, password) => {
     if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
       return Promise.resolve(DEFAULT_ADMIN)
+    }
+    const user = await User.findOne({
+      email,
+      password
+    })
+    if (user) {
+      return Promise.resolve(user)
     }
     return null
   }
@@ -51,7 +71,7 @@ const start = async () => {
     }
   )
   app.use(admin.options.rootPath, adminRouter)
-
+  app.use('/static', express.static('public'))
 
   app.listen(PORT, () => {
     console.log(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`)
