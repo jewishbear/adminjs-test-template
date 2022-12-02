@@ -6,9 +6,9 @@ export default {
 	options: {
 		properties: {
 			text: {
-				type: 'string',
+				type: 'richtext',
 				components: {
-					edit: Components.MyInput, // this is our custom component
+					edit: Components.CustomRichText, // this is our custom component
 				}
 			}
 		}

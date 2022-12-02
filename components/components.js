@@ -3,9 +3,11 @@ const { ComponentLoader } = pkg
 
 const componentLoader = new ComponentLoader()
 
+// нужно заменить на свой
+const ABSOLUTE_PATH_TO_COMPONENT = 'D:\\cgu\\admin\\components\\rich-text-editor\\rich-text-editor.tsx'
+
 const Components = {
-	// MyInput: componentLoader.add('MyInputComponent', '../components/MyInput'),
-	// other custom components
+	CustomRichText: componentLoader.add('RichTextEditor', ABSOLUTE_PATH_TO_COMPONENT),
 }
 
 export { componentLoader, Components }

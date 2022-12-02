@@ -22,9 +22,9 @@ const start = async () => {
     resources: [
       User,
       files,
-      // TestResource
+      TestResource
     ],
-    // componentLoader
+    componentLoader
   })
 
   const sessionStore = MongoStore.create({
