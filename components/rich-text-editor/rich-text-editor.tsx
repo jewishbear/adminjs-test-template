@@ -12,6 +12,8 @@ import TableRow from '@tiptap/extension-table-row'
 import Text from '@tiptap/extension-text'
 import TextAlign from '@tiptap/extension-text-align'
 import Typography from '@tiptap/extension-typography'
+import Color from '@tiptap/extension-color'
+import TextStyle from '@tiptap/extension-text-style'
 import { EditorContent, EditorEvents, EditorOptions, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 // @ts-ignore
@@ -36,7 +38,6 @@ const RichTextEditor: FC<RichTextEditorProps> = (props) => {
   }, [])
 
   const { limit, extensions = [], ...restOptions } = options
-
   const editor = useEditor({
     extensions: [
       CharacterCount.configure({ limit, mode: 'nodeSize' }),
@@ -53,6 +54,8 @@ const RichTextEditor: FC<RichTextEditorProps> = (props) => {
       Text,
       TextAlign.configure({ types: ['heading', 'paragraph', 'image'] }),
       Typography,
+      Color,
+      TextStyle,
       ...extensions,
     ],
     content: value,
@@ -61,10 +64,21 @@ const RichTextEditor: FC<RichTextEditorProps> = (props) => {
     ...restOptions,
   })
 
+  if (!editor) {
+    return null
+  }
+
+  console.log('editor', editor)
+
   return (
     <>
-      <MenuBar editor={editor} />
       I AM CUSTOM!
+      <MenuBar editor={editor} />
+      <input
+          type="color"
+          onInput={event => editor.chain().focus().setColor(event.target.value).run()}
+          value={editor.getAttributes('textStyle').color}
+      />
       <EditorWrapper>
         <EditorContent editor={editor} />
         {options.limit && (
